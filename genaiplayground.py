@@ -13,7 +13,7 @@ if not API_KEY:
 
 # Configure Gemini
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-2.0-pro")
+model = genai.GenerativeModel("models/gemini-pro")
 
 # Streamlit config
 st.set_page_config(page_title="GenAI Playground", layout="wide")
