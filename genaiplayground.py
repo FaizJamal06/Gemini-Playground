@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-
 from dotenv import load_dotenv
 import os
 
@@ -40,14 +39,15 @@ if st.button("Generate"):
     else:
         with st.spinner("Generating response..."):
             try:
-                config = GenerateContentConfig(
-                    system_instruction=user_prompt,
-                    temperature=temperature,
-                    max_output_tokens=max_tokens,
-                    top_k=top_k,
-                    top_p=top_p,
-                )
-                response = model.generate_content(prompt, config=config)
+                config = {
+                    "system_instruction": user_prompt,
+                    "temperature": temperature,
+                    "max_output_tokens": max_tokens,
+                    "top_k": top_k,
+                    "top_p": top_p,
+                }
+                response = model.generate_content(prompt, **config)
+
                 st.markdown("### ✨ Response")
                 st.write(response.text)
             except Exception as e:
