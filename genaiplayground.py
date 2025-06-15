@@ -26,14 +26,14 @@ with st.sidebar:
     max_tokens = st.slider("Max Output Tokens", 100, 2048, 512)
     top_k = st.slider("Top-k", 1, 100, 40)
     top_p = st.slider("Top-p (Nucleus Sampling)", 0.0, 1.0, 0.9)
-    user_prompt = st.text_area("System Instruction (Optional)", value="You are a helpful assistant.")
+    system_instruction = st.text_area("System Instruction (Optional)", value="You are a helpful assistant.")
 
-# Prompt area
-prompt = st.text_area("💬 Enter your prompt here", height=200)
+# Main input
+user_input = st.text_area("💬 Enter your prompt here", height=200)
 
-# Generate
+# Generate response
 if st.button("Generate"):
-    if not prompt.strip():
+    if not user_input.strip():
         st.warning("Please enter a prompt first.")
     else:
         with st.spinner("Generating response..."):
@@ -45,10 +45,12 @@ if st.button("Generate"):
                     top_p=top_p,
                 )
 
+                # Combine system instruction and user input
+                full_prompt = f"{system_instruction.strip()}\n\nUser: {user_input.strip()}"
+
                 response = model.generate_content(
-                    prompt,
-                    generation_config=generation_config,
-                    system_instruction=user_prompt if user_prompt.strip() else None
+                    full_prompt,
+                    generation_config=generation_config
                 )
 
                 st.markdown("### ✨ Response")
